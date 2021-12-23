@@ -1,0 +1,38 @@
+div.pregunta {
+  display: flex;
+  justify-content: center;
+}
+
+textarea {
+  resize: none;
+  color: red;
+}
+
+.datos {
+  height: 95vh;
+}
+
+.quest {
+  height: 95vh;
+}
+
+ul.list-group {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+h2.tittle {
+  color: blue;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.user {
+  font-size: large;
+  font-weight: bold;
+}

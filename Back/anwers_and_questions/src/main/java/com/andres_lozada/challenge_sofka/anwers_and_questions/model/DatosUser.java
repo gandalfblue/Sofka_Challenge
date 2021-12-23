@@ -4,6 +4,7 @@
 package com.andres_lozada.challenge_sofka.anwers_and_questions.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -17,26 +18,23 @@ public class DatosUser {
 	@Id
 	private String id;
 	
-	private Integer consecutivo;
-	private String nombre;
 	private String username;
+	private String nombre;
 	private Integer cedula;
 	private Integer puntos_total;
 	
 	public DatosUser() {
 		
 	}
-
+	
 	/**
-	 * @param consecutivo
 	 * @param nombre
 	 * @param username
 	 * @param cedula
 	 * @param puntos_total
 	 */
-	public DatosUser(Integer consecutivo, String nombre, String username, Integer cedula, Integer puntos_total) {
+	public DatosUser(String nombre, String username, Integer cedula, Integer puntos_total) {
 		super();
-		this.consecutivo = consecutivo;
 		this.nombre = nombre;
 		this.username = username;
 		this.cedula = cedula;
@@ -55,20 +53,6 @@ public class DatosUser {
 	 */
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	/**
-	 * @return the consecutivo
-	 */
-	public Integer getConsecutivo() {
-		return consecutivo;
-	}
-
-	/**
-	 * @param consecutivo the consecutivo to set
-	 */
-	public void setConsecutivo(Integer consecutivo) {
-		this.consecutivo = consecutivo;
 	}
 
 	/**
@@ -125,7 +109,5 @@ public class DatosUser {
 	 */
 	public void setPuntos_total(Integer puntos_total) {
 		this.puntos_total = puntos_total;
-	}
-
-	
+	}	
 }
