@@ -18,6 +18,7 @@ public class Preguntas {
 	private String id;
 	
 	private Integer nivel;
+	private Integer numeropregunta;
 	private String pregunta;
 	private String respuestaverdadera;
 	private String respuestafalsa1;
@@ -36,10 +37,11 @@ public class Preguntas {
 	 * @param respuestafalsa2
 	 * @param respuestafalsa3
 	 */
-	public Preguntas(Integer nivel, String pregunta, String respuestaverdadera, String respuestafalsa1,
+	public Preguntas(Integer nivel, Integer numeropregunta, String pregunta, String respuestaverdadera, String respuestafalsa1,
 			String respuestafalsa2, String respuestafalsa3) {
 		super();
 		this.nivel = nivel;
+		this.numeropregunta = numeropregunta;
 		this.pregunta = pregunta;
 		this.respuestaverdadera = respuestaverdadera;
 		this.respuestafalsa1 = respuestafalsa1;
@@ -73,6 +75,20 @@ public class Preguntas {
 	 */
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
+	}
+	
+	/**
+	 * @return the nivel
+	 */
+	public Integer getNumeropregunta() {
+		return numeropregunta;
+	}
+
+	/**
+	 * @param nivel the nivel to set
+	 */
+	public void setNumeropregunta(Integer numeropregunta) {
+		this.numeropregunta = numeropregunta;
 	}
 
 	/**
@@ -134,14 +150,14 @@ public class Preguntas {
 	/**
 	 * @return the respuestafalsa3
 	 */
-	public String getRespuesta_falsa3() {
+	public String getRespuestafalsa3() {
 		return respuestafalsa3;
 	}
 
 	/**
 	 * @param respuestafalsa3 the respuestafalsa3 to set
 	 */
-	public void setRespuesta_falsa3(String respuestafalsa3) {
+	public void setRespuestafalsa3(String respuestafalsa3) {
 		this.respuestafalsa3 = respuestafalsa3;
 	}
 }

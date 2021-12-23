@@ -3,6 +3,8 @@
  */
 package com.andres_lozada.challenge_sofka.anwers_and_questions.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,16 +30,25 @@ public class PreguntasController {
 	PreguntasRepository preguntasRepository;
 	
 	@GetMapping("/preguntas/nivel/{nivel}")
-	public ResponseEntity<Preguntas> getPreguntasByNivel(@PathVariable("nivel") Integer nivel){
-					
-			Preguntas pregunta = preguntasRepository.findByNivel(nivel).get(0);
-			Optional<Preguntas> preguntasData = Optional.of(pregunta);
+	public ResponseEntity<List<Preguntas>> getPreguntasByNivel(@PathVariable("nivel") Integer nivel){
+		
+		try {		
 			
-			if (preguntasData.isPresent()) {
-				return new ResponseEntity<>(preguntasData.get(), HttpStatus.OK);
-			} else {
-				
+			List<Preguntas> pregunta = new ArrayList<Preguntas>();			
+			
+			if (nivel != null) {
+				preguntasRepository.findByNivel(nivel).forEach(pregunta::add);
+			}
+			
+			if (pregunta.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}		
+			}
+			else {				
+				return new ResponseEntity<>(pregunta, HttpStatus.OK);
+			}
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

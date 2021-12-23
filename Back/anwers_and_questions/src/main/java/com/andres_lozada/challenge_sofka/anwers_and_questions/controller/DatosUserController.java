@@ -3,6 +3,8 @@
  */
 package com.andres_lozada.challenge_sofka.anwers_and_questions.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andres_lozada.challenge_sofka.anwers_and_questions.model.DatosUser;
@@ -32,18 +35,26 @@ public class DatosUserController {
 	@Autowired
 	DatosUserRepository datosuserRepository;
 	
-	@GetMapping("/users/cedula/{cedula}")
-	public ResponseEntity<DatosUser> getDatosUserByCedula(@PathVariable("cedula") Integer cedula){
+	@GetMapping("/users")
+	public ResponseEntity<List<DatosUser>> getAllDatosUser(@RequestParam(required = false) Integer cedula){
 		
-		DatosUser datos = datosuserRepository.findByCedula(cedula).get(0);
-		Optional<DatosUser> user = Optional.of(datos);
+		try {
+			
+			List<DatosUser> user = new ArrayList<DatosUser>();
+			
+			if (cedula == null) {
+				datosuserRepository.findAll().forEach(user::add);
+			} else {
+				datosuserRepository.findByCedula(cedula).forEach(user::add);
+			}
 		
-		if (user.isPresent()) {
-			
-			return new ResponseEntity<>(user.get(), HttpStatus.OK);
-		} else {
-			
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			if (user.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -53,10 +64,9 @@ public class DatosUserController {
 		try {
 			
 			DatosUser datos = datosuserRepository.save(new DatosUser(
-					cedula.getCedula(),
 					cedula.getNombre(),
 					cedula.getUsername(),
-					cedula.getConsecutivo(),
+					cedula.getCedula(),
 					cedula.getPuntos_total()));
 			return new ResponseEntity<>(datos, HttpStatus.CREATED);
 			
