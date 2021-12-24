@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { PutService } from 'src/app/servicios/put.service';
 import { PostService } from 'src/app/servicios/post.service';
 import { GetService } from 'src/app/servicios/get.service';
 
@@ -12,6 +10,7 @@ import { GetService } from 'src/app/servicios/get.service';
 })
 export class FrontComponent implements OnInit {
 
+  //Variables que se declaran de manera global
   user!: any;
   res: any;
   res3: any;
@@ -48,12 +47,11 @@ export class FrontComponent implements OnInit {
   rango = Array();
   mostrar: number = 2;
 
-  constructor(private objetoHttp: HttpClient, private read: GetService,
-    private update: PutService, private post: PostService) { }
+  constructor(private read: GetService, private post: PostService) { }
 
-
+  //Metodo que se ejecuta al cargar la pagina, sirve para hacer get a los datos iniciales
+  //como todos los usuarios almacenados, las preguntas del nivel inicial
   ngOnInit(): void {
-    console.log(this.nivel);
     this.cedula = localStorage.getItem("cedula");
     this.nombre = localStorage.getItem("nombre");
     this.username = localStorage.getItem("username");
@@ -64,11 +62,12 @@ export class FrontComponent implements OnInit {
     this.total = Number(this.mostrartotal);
     this.totalpagado = Number(this.mostrartotalpagado);
 
-    if (this.nombre = null && this.cedula = null && this.username =null) {
+    if (this.nombre == null && this.cedula == null && this.username == null) {
       this.cedula = "";
       this.nombre = "";
       this.username = "";
     }
+
     this.res = this.read.codigoRespuesta(this.urlapi, this.nivel).subscribe(datos => {
       this.content = datos.status;
       console.log(this.content);
@@ -83,18 +82,11 @@ export class FrontComponent implements OnInit {
 
     this.res3 = this.read.leerTodos(this.urlapi2).subscribe(data => {
       this.content5 = Object.values(data);
-      this.content5.forEach(element => {
-        this.content6.push(element);
-
-      });
-      this.content6.forEach(element => {
-
-      })
-
       this.ranking();
     });
   }
 
+  //Metodo que srive para hacer un get a la base de datos
   leer() {
 
     this.res2 = this.read.leer(this.urlapi, this.nivel).subscribe(datos2 => {
@@ -103,6 +95,7 @@ export class FrontComponent implements OnInit {
     });
   }
 
+  //Metodo que sirve para traer los 3 puntajes mayores que esta almacenado en la databse
   ranking() {
 
     var numeros = new Array();
@@ -125,6 +118,7 @@ export class FrontComponent implements OnInit {
     };
   }
 
+  //Metodo que sirve para seleccionar la pregunta de manera aleatoria
   randomnumber() {
 
     setTimeout(function () {
@@ -140,36 +134,32 @@ export class FrontComponent implements OnInit {
     return this.content2[this.numero];
   }
 
+  //Metodo que sirve para escoger la respuesta, si selecciona la respuesta correcta
+  //continua al siguiente nivel, si selecciona la respuesta incorrecta termina el juego
   radioChangeHandler(event: any) {
     console.log(this.nivel);
-    while (this.nivel >= 1 && this.nivel <= 5) {
-      console.log("ingreso al while")
-      this.selectanswer = event.target.value;
+    this.selectanswer = event.target.value;
+
+    if (this.nivel >= 1 && this.nivel <= 5) {
       if (this.selectanswer == this.respuestaverdadera) {
         console.log("ingreso al if del while")
-        window.localStorage["nombre"] = this.nombre;
-        window.localStorage["username"] = this.username;
-        window.localStorage["cedula"] = this.cedula;
         this.total += 200000;
         this.nivel += 1;
         this.totalpagado += this.total;
+        window.localStorage["cedula"] = this.cedula;
+        window.localStorage["nombre"] = this.nombre;
+        window.localStorage["username"] = this.username;
 
       } else {
-        console.log("no ingreso al if del while")
-        let body = {
-          "cedula": this.cedula,
-          "nombre": this.nombre,
-          "puntos_total": this.total,
-          "username": this.username,
-        }
 
-        this.post.crear(this.urlapi2, body).subscribe(data => {
-          this.user = data;
-        });
+        this.agregar();
         this.total = 0;
         this.nivel = 1;
-        this.mostrar = 1;
-        break;
+        window.localStorage["mostrartotal"] = this.total.toString();
+        window.localStorage["nivel"] = this.nivel.toString();
+        window.localStorage["mostrartotalpagado"] = this.totalpagado.toString();
+        localStorage.clear();
+        window.location.reload();
       }
 
       window.localStorage["mostrartotal"] = this.total.toString();
@@ -179,36 +169,18 @@ export class FrontComponent implements OnInit {
     }
     if (this.nivel > 5) {
       console.log("ingreso al if")
-      let body = {
-        "cedula": this.cedula,
-        "nombre": this.nombre,
-        "puntos_total": this.total,
-        "username": this.username,
-      }
-
-      this.post.crear(this.urlapi2, body).subscribe(data => {
-        this.user = data;
-      });
-      window.localStorage["nombre"].clear();
-      window.localStorage["cedula"].clear();
-      window.localStorage["username"].clear();
-      this.mostrar = 2
+      this.agregar();
       this.total = 0;
       this.nivel = 1;
+      window.localStorage["mostrartotal"] = this.total.toString();
+      window.localStorage["nivel"] = this.nivel.toString();
+      window.localStorage["mostrartotalpagado"] = this.totalpagado.toString();
+      window.location.reload();
     }
   }
 
-
-
-  retirada() {
-    this.nivel = 1;
-    this.total = 0;
-    window.localStorage["mostrartotal"] = this.total.toString();
-    window.localStorage["nivel"] = this.nivel.toString();
-    window.localStorage["mostrartotalpagado"] = this.totalpagado.toString();
-    window.localStorage["nivel"] = this.nivel.toString();
-    window.location.reload();
-    window.localStorage["mostrartotal"].clear();
+  //Metodo que sirve para realizar un post a la base de datos
+  agregar() {
 
     let body = {
       "cedula": this.cedula,
@@ -220,7 +192,18 @@ export class FrontComponent implements OnInit {
     this.post.crear(this.urlapi2, body).subscribe(data => {
       this.user = data;
     });
-    this.mostrar = 2
+
+  }
+
+  //Metodo que sirve para finalizar el juego voluntariamente 
+  retirada() {
+    this.nivel = 1;
+    this.total = 0;
+    window.localStorage["mostrartotal"] = this.total.toString();
+    window.localStorage["nivel"] = this.nivel.toString();
+    window.localStorage["mostrartotalpagado"] = this.totalpagado.toString();
+    this.agregar();
+    window.location.reload();
 
   }
 }

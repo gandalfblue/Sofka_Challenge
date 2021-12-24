@@ -30,9 +30,20 @@ button {
   display: flex;
   align-items: center;
   margin-top: 20px;
+  color: white;
 }
 
 .user {
   font-size: large;
   font-weight: bold;
+}
+
+table {
+  background-color: thistle;
+  opacity: 0.7;
+  color: black;
+}
+
+.tabl:hover {
+  box-shadow: 0 0 30px gold;
 }
