@@ -1,8 +1,11 @@
 /**
- * 
+ * Nombre del paquete
  */
 package com.andres_lozada.challenge_sofka.anwers_and_questions.controller;
 
+/*
+ * Son las importaciones de librerias que se usan
+ */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,16 +22,23 @@ import com.andres_lozada.challenge_sofka.anwers_and_questions.repository.Pregunt
 
 /**
  * @author Andres Lozada
- *
+ * Clase que representa las operaciones y funciones necesarias para 
+ * buscar los atributos de las Preguntas
  */
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class PreguntasController {
 	
+	/*
+	 * Instancia que representa la interfaz de Preguntas
+	 */
 	@Autowired
 	PreguntasRepository preguntasRepository;
 	
+	/**
+     * Funcion que permite buscar los datos de los aributos de las preguntas en la database
+     */
 	@GetMapping("/preguntas/nivel/{nivel}")
 	public ResponseEntity<List<Preguntas>> getPreguntasByNivel(@PathVariable("nivel") Integer nivel){
 		

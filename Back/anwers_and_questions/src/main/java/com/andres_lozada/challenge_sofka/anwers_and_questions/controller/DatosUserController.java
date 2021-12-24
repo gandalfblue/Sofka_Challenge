@@ -1,8 +1,11 @@
-/**
- * 
+/*
+ * Nombre del paquete
  */
 package com.andres_lozada.challenge_sofka.anwers_and_questions.controller;
 
+/*
+ * Son las importaciones de librerias que se usan
+ */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,16 +28,23 @@ import com.andres_lozada.challenge_sofka.anwers_and_questions.repository.DatosUs
 
 /**
  * @author Andres Lozada
- *
+ * Clase que representa las operaciones y funciones necesarias para 
+ * crear, buscar y actualizar los atributos de los datos de los usuarios
  */
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class DatosUserController {
 	
+	/*
+	 * Instancia que representa la interfaz de DatosUser
+	 */
 	@Autowired
 	DatosUserRepository datosuserRepository;
 	
+	/**
+     * Funcion que permite buscar los datos de los aributos de los usuarios en la database
+     */
 	@GetMapping("/users")
 	public ResponseEntity<List<DatosUser>> getAllDatosUser(@RequestParam(required = false) Integer cedula){
 		
@@ -58,6 +68,9 @@ public class DatosUserController {
 		}
 	}
 	
+	/**
+     * Funcion que permite crear los datos de los aributos de los usuarios en la database
+     */
 	@PostMapping("/users")
 	public ResponseEntity<DatosUser> createDatosUser(@RequestBody DatosUser cedula){
 		
@@ -76,6 +89,9 @@ public class DatosUserController {
 		}
 	}
 	
+	/**
+     * Funcion que permite actualizar los datos de los aributos de los usuarios en la database
+     */
 	@PutMapping("/users/{cedula}")
 	public ResponseEntity<DatosUser> updateDatosUser(@PathVariable("cedula") Integer cedula, @RequestBody DatosUser cedula_user){
 		
