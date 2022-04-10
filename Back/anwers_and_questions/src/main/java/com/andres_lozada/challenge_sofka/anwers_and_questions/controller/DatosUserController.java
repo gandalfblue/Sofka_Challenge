@@ -27,7 +27,7 @@ import com.andres_lozada.challenge_sofka.anwers_and_questions.model.DatosUser;
 import com.andres_lozada.challenge_sofka.anwers_and_questions.repository.DatosUserRepository;
 
 /**
- * @author Andres Lozada
+ * @author Andres Lozada Andrade
  * Clase que representa las operaciones y funciones necesarias para 
  * crear, buscar y actualizar los atributos de los datos de los usuarios
  */
